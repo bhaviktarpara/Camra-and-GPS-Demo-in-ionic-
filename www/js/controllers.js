@@ -103,7 +103,7 @@ $location.path("/app/browse");
                 }
                    })
 
-.controller('RideCtrl', function($scope, $location, $cordovaGeolocation) {
+.controller('RideCtrl', function($scope, $location, $cordovaGeolocation,$http) {
      $scope.takeGPS = function () {
 $scope.lat="";
 $scope.long="";
@@ -113,7 +113,12 @@ $scope.long="";
            
             $scope.lat  = position.coords.latitude
             $scope.long = position.coords.longitude
-            
+            this.link ="http://maps.googleapis.com/maps/api/geocode/json?latlng=";
+            this.link+=$scope.lat+","+$scope.long+"&sensor=true";
+            $http.get(this.link).then(function(value) {
+        $scope.responcedata= value.data;
+   //     alert(value.data);
+    });
              }, function(err) {
             // error
             alert('code: '    + err.code    + '\n' +
@@ -138,7 +143,7 @@ $scope.long="";
     //         // '<hr />'      + element.innerHTML;
     //     });
     // clear watch
-    $cordovaGeolocation.clearWatch(watch.watchID);
+    // $cordovaGeolocation.clearWatch(watch.watchID);
   }
   })
 
